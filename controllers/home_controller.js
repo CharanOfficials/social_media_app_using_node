@@ -1,5 +1,7 @@
 const home = (req, res) => {
-    return res.send("<h1>Express is up for coding</h1>");
+    return res.render('home', {
+        title: "Home"
+    })
 };
   
 export default {

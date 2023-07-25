@@ -1,5 +1,7 @@
 const post = function(req, res){
-    return res.end("<h1>User Posts</h1>")
+    return res.render('post', {
+        title:"Post"
+    })
 }
 
 const postLikes = function(req, res){
