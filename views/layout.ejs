@@ -6,6 +6,7 @@
     <title><%= title %></title>
     <!-- already in assets because of the path mentioned in index.js -->
     <link rel="stylesheet" href="/css/layout.css"> 
+    <%- style %>
 </head>
 <body>
     <%- include('_header'); %>
@@ -13,5 +14,6 @@
     <%- body %>
 
     <%- include('_footer'); %>
+    <%- script %>
 </body>
 </html>

@@ -9,6 +9,10 @@ app.set("views", "./views") // set the path
 app.use(expressLayouts) // set the layouts before routing starts
 app.use(express.static('./assets')) // entered in assets
 
+// extract styles and scripts from the subpages into the layout
+app.set('layout extractStyles', true) 
+app.set('layout extractScripts', true)
+
 app.use('/', router); // set the default route
 
 // initiate server
