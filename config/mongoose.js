@@ -8,5 +8,4 @@ db.on('error', console.error.bind(console, "Error while connecting to MongoDB"))
 db.once('open', function(){
     console.log("Connected to the database :: MongoDB")
 })
-
 export default db

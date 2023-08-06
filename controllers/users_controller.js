@@ -7,6 +7,9 @@ const profile = function(req, res){
 
 // Sign Up Page
 const signUp = function(req, res){
+    if(req.isAuthenticated()){
+        return res.redirect('/user/profile')
+    }
     return res.render('user_sign_up', {
         title:"Goosip ! Sign Up"
     })
@@ -14,6 +17,9 @@ const signUp = function(req, res){
 
 // Sign In page
 const signIn = function(req, res){
+    if(req.isAuthenticated()){
+        return res.redirect('/user/profile')
+    }
     return res.render('user_sign_in', {
         title:"Goosip ! Sign In"
     })
@@ -47,9 +53,20 @@ const create = function(req, res){
 
 // Sign in and create a session for the user
 const createSession = function(req, res){
-    // To Do later
+    return res.redirect('/')
+}
+
+const destroySession = function (req, res) {
+     // passport function
+    req.logout(function (err) {
+        if (err) {
+            return next(err)
+        } else {
+            return res.redirect('/')
+        }
+    })
 }
 
 export default {
-    profile, signIn, signUp, create, createSession
+    profile, signIn, signUp, create, createSession, destroySession
 }
