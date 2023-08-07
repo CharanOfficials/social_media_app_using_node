@@ -7,8 +7,17 @@ const postScemea = mongoose.Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-    }
+        ref: 'user',
+        required:true
+    },
+    // include the array of ids of all comments in this post schema itself
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            def: 'comment',
+            required:true
+        }
+    ]
 }, {
     timestamps: true
 })

@@ -2,21 +2,47 @@
     Goosip/ <%= title %>
 </h1>
 <section id="feed-posts">
+    <% if(locals.user){ %>
     <h4>Posts</h4>
     <form action="/posts/create" id="new-post-form" method="POST">
         <textarea name="content" cols="30" rows="3" placeholder="Type here..."></textarea>
         <input type="submit" value="Post">
     </form>
+    <%}%>
     <div id="post-list-container">
         <ul>
             <% for(post of posts){%>
                 <li>
+                    <p>
                     <%= post.content %>
                     <small>
                         <%= post.user.name %>
                     </small>
+                    </p>
+                    <div class="post-comments">
+                        <% if(locals.user){%>
+                            <form action="comments/create" method="POST">
+                                <input type="text" name="content" placeholder="type here to add comment...">
+                                <input type="hidden" name="postid" value="<%= post._id %>">
+                                <input type="submit" value="Add Comment">
+                            </form>
+                        <%} %>
+                    </div>
+                    <div class="post-comments-list">
+                        <ul class="post-comment-<%= post._id %>">
+                            <% for(cmnts of post.comments){%>
+                                <p>
+                                    <%= cmnts %>
+                                </p>
+                                <br>
+                                <small>
+
+                                </small>    
+                            <%} %>
+                        </ul>
+                    </div>
                 </li>
-                <%} %>
+            <%} %>
         </ul>
     </div>
 </section>
