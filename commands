@@ -1,0 +1,8 @@
+In package.json under scripts add 
+
+"build-css": "sass ./assets/scss/:./assets/css/ --no-source-map"
+
+To run the compiler type below in command line
+npm run build-css
+
+Before runing the server, always use above run commnd to update the css because browser only understands the css
