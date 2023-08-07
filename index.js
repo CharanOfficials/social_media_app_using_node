@@ -18,25 +18,6 @@ app.set("views", "./views") // set the path
 app.use(expressLayouts) // set the layouts before routing starts
 app.use(express.static('./assets')) // entered in assets
 
-// import { fileURLToPath } from 'url';
-// import { dirname } from 'path';
-
-// const currentFileURL = import.meta.url;
-// const currentFilePath = fileURLToPath(currentFileURL);
-// const currentDirPath = dirname(currentFilePath);
-
-// const setupSassMiddleware = async () => {
-//   app.use(await sassMiddleware({
-//     src: `${currentDirPath}/assets/scss`,
-//     dest: `${currentDirPath}/assets/css`,
-//     debug: true,
-//     outputStyle: 'extended',
-//     prefix: '/css'
-//   }));
-// };
-// console.log(`${currentDirPath}/assets/scss`)
-// setupSassMiddleware();
-
 app.use(express.urlencoded()) // middleware
 app.use(cookieParser()) // Setup cookie parser
 
