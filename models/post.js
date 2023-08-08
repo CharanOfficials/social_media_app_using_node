@@ -14,7 +14,7 @@ const postScemea = mongoose.Schema({
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            def: 'comment',
+            ref: 'comment',
             required:true
         }
     ]

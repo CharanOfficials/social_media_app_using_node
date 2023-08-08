@@ -9,11 +9,11 @@ const createComment = function (req, res) {
                     post: req.body.postid,
                     user: req.user._id
                 })
-                //     .then((comment) => {
-                //     post.comments.push(comment)
-                //     post.save()
-                //     res.redirect('/')
-                // })
+                    .then((comment) => {
+                    post.comments.push(comment)
+                    post.save()
+                    res.redirect('/')
+                })
                     .catch((err) => {
                 console.log(`Error while commenting the Post ${err}`)
             })
