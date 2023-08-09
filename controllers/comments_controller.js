@@ -34,6 +34,7 @@ const destroy =  function (req, res) {
                     return post.user
                 })
                 .then((postUser) => {
+                    // .id is used for converting the _id in String before comparison
                     if ((comment.user == req.user.id) || (postUser._id == req.user.id)) {
                         comment.deleteOne()
                         Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } }, {new: true})

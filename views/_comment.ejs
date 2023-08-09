@@ -1,0 +1,14 @@
+<li>
+    <% if((locals.user && locals.user.id==cmnts.user.id) ||(locals.user && locals.user.id==post.user.id)){%>
+        <br>
+        <small>
+            <a href="/comments/destroy/<%= cmnts.id %>">Delete</a>
+        </small>
+        <% } %>
+        <p>
+            <%= cmnts.content %>
+        </p>
+        <small>
+            <%= cmnts.user.name %>
+        </small>
+</li>
