@@ -3,7 +3,7 @@ const router = express.Router()
 import usersController from "../controllers/users_controller.js"
 import passport from "../config/passport-local-strategy.js"
 // import post from "../routes/post.js"
-router.get('/profile', passport.checkAuthentication, usersController.profile)
+router.get('/profile/:id', passport.checkAuthentication, usersController.profile)
 // router.get('/postLikes', post) 
 // router.get('/post', post)
 router.get('/sign-Up', usersController.signUp)
@@ -18,4 +18,9 @@ router.post(
     usersController.createSession // if success
   );
 
+router.post(
+  '/update/:id',
+  passport.checkAuthentication,
+  usersController.updateProfile
+)
 export default router

@@ -1,23 +1,28 @@
 import Post from "../models/post.js"
-const home = (req, res) => {
-    // To fetch the entire user object
-    Post.find({})
-        .populate('user')
-        .populate({
-            path: 'comments',
-            populate:{
-                path:'user' 
-            }
-        })
-        .exec()
-        .then((posts) => {
+import User from "../models/user.js"
+const home = async function (req, res) {
+    try {
+        // To fetch the entire user object
+        let posts = await Post.find({})
+            .populate('user')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user'
+                }
+            })
+
+        let user = await User.find({})
         return res.render('home', {
             title: "Home",
-            posts: posts
+            posts: posts,
+            all_users: user
         })
-    })
-};
-  
+    
+    } catch (err) {
+        console.log("Error", err)
+    }
+}
 export default {
     home,
 };  

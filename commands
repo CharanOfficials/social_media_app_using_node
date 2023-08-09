@@ -1,8 +1,11 @@
-In package.json under scripts add 
+In package.json under scripts add
 
-"build-css": "sass ./assets/scss/:./assets/css/ --no-source-map"
+    "watch-css": "sass ./assets/scss/:./assets/css/ --watch --no-source-map",
+    "start-server": "node-dev index.js",
+    "start": "concurrently \"npm run watch-css\" \"npm run start-server\"",
 
-To run the compiler type below in command line
-npm run build-css
+Dependencies:
+npm install chokidar-cli sass concurrently
 
-Before runing the server, always use above run commnd to update the css because browser only understands the css
+To run the compiler with server concurrently type below in command line
+npm start

@@ -1,8 +1,29 @@
 import User from '../models/user.js'
+// Edit the user profile
 const profile = function(req, res){
-    return res.render('profile', {
-        title: "Profile"
+    User.findById(req.params.id)
+        .then((user) => {
+        return res.render('profile', {
+            title: "Profile",
+            profile_user: user
+        })
     })
+}
+
+// UPdate the user profile
+const updateProfile = function (req, res) {
+    if (req.user.id == req.params.id) {
+        console.log(req.body.name)
+        User.findByIdAndUpdate(req.params.id, req.body)
+            .then((user) => {
+                
+                return res.redirect('back')
+            }).catch((err) => {
+            console.log("Error occured while updating the profile", err)
+        })
+    } else {
+        return res.status(401).send("Unauthorized Access")
+    }
 }
 
 // Sign Up Page
@@ -68,5 +89,5 @@ const destroySession = function (req, res) {
 }
 
 export default {
-    profile, signIn, signUp, create, createSession, destroySession
+    profile, signIn, signUp, create, createSession, destroySession, updateProfile
 }
