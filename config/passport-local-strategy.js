@@ -6,8 +6,10 @@ import User from '../models/user.js'
 
 // authentication user passport
 passport.use(new LocalStrategy({
-    usernameField : 'email'},
-    function(email, password, done){
+    usernameField: 'email',
+    passReqToCallback: true
+    },
+    function(req,email, password, done){
         // find a user and establish the identity
         // email as a paraeter and email as a value fro schema
         User.findOne({email:email})
@@ -15,12 +17,12 @@ passport.use(new LocalStrategy({
             if(user && user.password === password){
                 return done(null, user)
             }else{
-                console.log("Invalid Username/ Password")
+                req.flash('error', 'Invalid username/ pssword')
                 return done(null, false)
             }
         })
         .catch(err=>{
-            console.log("Error in finding the user ---> Passport")
+            req.flash('error', err)
             return done(err)
         })
     }

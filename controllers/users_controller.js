@@ -16,13 +16,15 @@ const updateProfile = function (req, res) {
         console.log(req.body.name)
         User.findByIdAndUpdate(req.params.id, req.body)
             .then((user) => {
-                
+                req.flash('success',"Profile information is updated.")
                 return res.redirect('back')
             }).catch((err) => {
-            console.log("Error occured while updating the profile", err)
+                req.flash('error', "Error occured while updating the profile.")
+                res.redirect('back')
         })
     } else {
-        return res.status(401).send("Unauthorized Access")
+        req.flash('error',"You are not authorized to update the profile.")
+        return res.redirect('back')
     }
 }
 
@@ -48,32 +50,34 @@ const signIn = function(req, res){
 
 // Get sign up data
 const create = function(req, res){
-    if(req.body.password != req.body.confirm_password){
+    if (req.body.password != req.body.confirm_password) {
+        req.flash('error',"Password and Confirm password should be same")
         return res.redirect('back')
     } 
     User.findOne({email:req.body.email})
     .then(user=>{
-        if(user){
-            console.log("User already exists with user name", res.body.email)
+        if (user) {
+            req.flash('error',"User already exists with same email")
             return res.redirect('back')
         }
         User.create(req.body)
-        .then((user)=>{
-            console.log("User created successfully")
+            .then((user) => {
+            req.flash('success',"User created successfully")
             return res.redirect('/user/sign-In')
         })
-        .catch((err)=>{
-            console.log("Error occured while creating a new user")
+            .catch((err) => {
+            req.flash('error',"Error occured while creating a new user")
             return res.redirect('back')
         })
     })
-    .catch(err=>{
-        console.log("Error occure which accessing the user", err)
+        .catch(err => {
+        req.flash('error',"Error occured which checking the user")
         return res.redirect('back')
     })}
 
 // Sign in and create a session for the user
 const createSession = function(req, res){
+    req.flash('success', 'Logged in Successfully')
     return res.redirect('/')
 }
 
@@ -81,8 +85,10 @@ const destroySession = function (req, res) {
      // passport function
     req.logout(function (err) {
         if (err) {
+            req.flash('error', 'Logging out failed')
             return next(err)
         } else {
+            req.flash('success', 'Logged out successfully')
             return res.redirect('/')
         }
     })

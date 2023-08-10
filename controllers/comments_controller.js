@@ -11,10 +11,12 @@ const createComment = async function (req, res) {
             })
             post.comments.push(comment)
             post.save()
+            req.flash('success',"Comment added.")
             res.redirect('/')
         }
     } catch (err) {
-        console.log("Error", err)
+        req.flash('error',"You can't delete this comment.")
+        return res.redirect('back')
     }
 }
 
@@ -28,14 +30,16 @@ const destroy = async function (req, res) {
                 // .id is used for converting the _id in String before comparison
                 if ((comment.user == req.user.id) || (postUser._id == req.user.id)) {
                     await comment.deleteOne()
-                    await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } }, {new: true})
+                    await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } }, { new: true })
+                    req.flash('success',"Comment deleted.")
                     return res.redirect('back')
                 } else {
-                    return res.status(500).send("Unauthorized")
+                    req.flash('error',"You are not authorized to delete the comment.")
+                    return res.redirect('back')
                 }
     } catch (err) {
-        console.log("Error", err)
-        return
+        req.flash('error',"You can't delete this comment.")
+        return res.redirect('back')
     }
 }
 

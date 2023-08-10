@@ -6,18 +6,18 @@ import expressLayouts from "express-ejs-layouts"
 import connectMongo from "connect-mongo" // importing mongo store
 import { MongoClient } from 'mongodb'; // necessary for mongo-store vesrsion 5
 import db from "./config/mongoose.js"
-// used for session cookie
-import session from 'express-session';
+import session from 'express-session';  // used for session cookie
 import passport from "passport";
 import passportLocal from './config/passport-local-strategy.js'
 import cookieParser from 'cookie-parser' //cookie parser for authentication
 import sassMiddleware from 'sass-middleware';  // sass middleware for rendering the css
+import flash from "connect-flash"
+import customMware from './config/middleware.js'
 
 app.set("view engine", "ejs") // set up a view engine
 app.set("views", "./views") // set the path
 app.use(expressLayouts) // set the layouts before routing starts
 app.use(express.static('./assets')) // entered in assets
-
 app.use(express.urlencoded()) // middleware
 app.use(cookieParser()) // Setup cookie parser
 
@@ -55,7 +55,8 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(passport.setAuthenticatedUser)
-
+app.use(flash()) // uses cookies to store the messages
+app.use(customMware.setFlash) // import and use flash middleware
 app.use('/', router); // set the default route
 
 // initiate server
