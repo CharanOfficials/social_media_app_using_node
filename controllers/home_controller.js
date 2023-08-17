@@ -4,6 +4,7 @@ const home = async function (req, res) {
     try {
         // To fetch the entire user object
         let posts = await Post.find({})
+            .sort('-createdAt')
             .populate('user')
             .populate({
                 path: 'comments',
