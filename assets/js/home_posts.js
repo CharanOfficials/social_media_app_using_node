@@ -1,5 +1,14 @@
 // method to subit the form data for new Post using AJAX   
 {
+    
+    // Attach delete functionality to existing delete buttons
+    $(document).ready(function () {
+    $('.delete-post-button').each(function () {
+        deletePost($(this));
+    });
+    });
+
+    console.log("XMR loaded")
     let createPost = function () {
         let newPostForm = $('#new-post-form')
         newPostForm.submit(function (e) {
@@ -13,8 +22,24 @@
                     let newPost = newPostDOM(data.data.post)
                     $(`#post-list-container>ul`).prepend(newPost)
                     deletePost($(' .delete-post-button', newPost));
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post published.",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                 },
                 error: function (error) {
+                    new Noty({
+                        theme: 'relax',
+                        text: "Unable to publish.",
+                        type: 'error',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                     console.log(error.responseText)
                 }
             })
@@ -54,20 +79,38 @@
     }
 
     // method to delete a post from DB
-    let deletePost = function(deleteLink) {
+    let deletePost = function (deleteLink) {
         $(deleteLink).click(function(e) {
             e.preventDefault();
+            console.log("Clicked")
             $.ajax({
                 type: 'GET', // Use uppercase 'GET' for consistency
                 url: $(this).prop('href'), // Use $(this) to refer to the clicked element
                 success: function (data) {
                     $(`#post-${data.data.post_id}`).remove();
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post and associated comments deleted.",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                 },
-                error: function(xhr, status, error) { // Use more standard parameter names
+                error: function (xhr, status, error) { // Use more standard parameter names
+                    new Noty({
+                        theme: 'relax',
+                        text: "You can't delete this post.",
+                        type: 'error',
+                        layout: 'topRight',
+                        timeout: 1500
+                        
+                    }).show();
                     console.log(error); // Log the actual error message
                 }
             });
         });
     };
+    
     createPost()
 }

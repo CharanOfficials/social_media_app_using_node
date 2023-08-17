@@ -19,7 +19,7 @@ const post = async function (req, res) {
     req.flash('success', 'Post published.')
     return res.redirect('back')
     } catch (err) {
-        req.flash('error', err)
+        req.flash('Unable to publish.', err)
         return res.redirect('back')
     }
 }
