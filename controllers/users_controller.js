@@ -1,4 +1,9 @@
 import User from '../models/user.js'
+import { fileURLToPath } from 'url'
+import { dirname, join} from "path"
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+import fs from 'fs'
 // Edit the user profile
 const profile = function(req, res){
     User.findById(req.params.id)
@@ -11,17 +16,45 @@ const profile = function(req, res){
 }
 
 // UPdate the user profile
-const updateProfile = function (req, res) {
+const updateProfile = async function (req, res) {
+    // if (req.user.id == req.params.id) {
+    //     console.log(req.body.name)
+    //     User.findByIdAndUpdate(req.params.id, req.body)
+    //         .then((user) => {
+    //             req.flash('success',"Profile information is updated.")
+    //             return res.redirect('back')
+    //         }).catch((err) => {
+    //             req.flash('error', "Error occured while updating the profile.")
+    //             res.redirect('back')
+    //     })
+    // } else {
+    //     req.flash('error',"You are not authorized to update the profile.")
+    //     return res.redirect('back')
+    // }
     if (req.user.id == req.params.id) {
-        console.log(req.body.name)
-        User.findByIdAndUpdate(req.params.id, req.body)
-            .then((user) => {
-                req.flash('success',"Profile information is updated.")
-                return res.redirect('back')
-            }).catch((err) => {
-                req.flash('error', "Error occured while updating the profile.")
-                res.redirect('back')
-        })
+        try {
+            let user = await User.findById(req.params.id)
+            User.uploadedAvatar(req, res, function (err) {
+                if (err) {
+                    console.log("Multer error", err)
+                } else {
+                    user.name = req.body.name
+                    user.email = req.body.email
+                    if (req.file) {
+                        if (user.avatar && fs.existsSync(join(__dirname, '..', user.avatar))){
+                            fs.unlinkSync(join(__dirname, '..', user.avatar))
+                        }
+                        // this is saving the path of the uploaded filee into the avatar field in the user
+                        user.avatar = User.avatarPath+'/'+req.file.filename
+                    }
+                    user.save()
+                    return res.redirect('back')
+                }
+            })
+        } catch {
+            req.flash('error', err)
+            return res.redirect('back')
+        }
     } else {
         req.flash('error',"You are not authorized to update the profile.")
         return res.redirect('back')

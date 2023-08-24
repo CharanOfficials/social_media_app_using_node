@@ -9,13 +9,21 @@ import db from "./config/mongoose.js"
 import session from 'express-session';  // used for session cookie
 import passport from "passport";
 import passportLocal from './config/passport-local-strategy.js'
+import passportJWT from './config/passport-jwt-strategy.js'
+import passportGoogleStrategy from './config/passport_google_oauth2_startegy.js'
 import cookieParser from 'cookie-parser' //cookie parser for authentication
 import sassMiddleware from 'sass-middleware';  // sass middleware for rendering the css
 import flash from "connect-flash"
 import customMware from './config/middleware.js'
+import { fileURLToPath } from 'url'
+import { dirname, join} from "path"
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 app.set("view engine", "ejs") // set up a view engine
 app.set("views", "./views") // set the path
+// make the uploads path avaiable to the browser
+app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(expressLayouts) // set the layouts before routing starts
 app.use(express.static('./assets')) // entered in assets
 app.use(express.urlencoded()) // middleware
