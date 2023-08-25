@@ -1,5 +1,6 @@
 import Comment from '../models/comment.js'
 import Post from "../models/post.js"
+import commentsMailer from '../mailers/comments_mailer.js'
 const createComment = async function (req, res) {
     try {
         let post = await Post.findById(req.body.postid)
@@ -11,6 +12,21 @@ const createComment = async function (req, res) {
             })
             post.comments.push(comment)
             post.save()
+            console.log(comment)
+            await comment.populate({
+                path: 'user',
+                select: '-password'
+            })
+            commentsMailer.newComment(comment)
+            if (req.xhr) {
+                return res.status(200).json({
+                    data: {
+                        comment: comment
+                    },
+                    message: "Post created!"
+                });
+            }
+
             req.flash('success',"Comment added.")
             res.redirect('/')
         }
@@ -31,6 +47,17 @@ const destroy = async function (req, res) {
                 if ((comment.user == req.user.id) || (postUser._id == req.user.id)) {
                     await comment.deleteOne()
                     await Post.findByIdAndUpdate(postId, { $pull: { comments: req.params.id } }, { new: true })
+
+                    // send the comment id which was deleted back to the views
+                    if (req.xhr){
+                        return res.status(200).json({
+                            data: {
+                                comment_id: req.params.id
+                            },
+                            message: "Post deleted"
+                        });
+                    }
+
                     req.flash('success',"Comment deleted.")
                     return res.redirect('back')
                 } else {

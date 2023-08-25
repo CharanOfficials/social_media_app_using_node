@@ -11,8 +11,6 @@ passport.use(new OAuth2Strategy({
 },
     async function (accessToken, refreshToken, profile, done) {
         // find a user
-        console.log(profile)
-
         let user = await User.findOne({ email: profile.emails[0].value }).exec()
             .then((user) => {
                 if (user) {
