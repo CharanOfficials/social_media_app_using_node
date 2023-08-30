@@ -9,3 +9,10 @@ npm install chokidar-cli sass concurrently
 
 To run the compiler with server concurrently type below in command line
 npm start
+
+To open the GUI of the QUE:
+
+
+To run redis on Linuux Ubuntu:
+sudo service redis-server start
+redis-cli

@@ -15,10 +15,15 @@
                 url: '/posts/create',
                 data: newPostForm.serialize(), //  converts the data in JSON
                 success: function (data) {
-                    console.log(data.data)
-                    let newPost = newPostDOM(data.data.post)
+                    console.log(data)
+                    let newPost = newPostDOM(data.data.post, data.data.user)
                     $(`#post-list-container>ul`).prepend(newPost)
                     deletePost($(' .delete-post-button', newPost));
+                    // bind postComments class
+                    new PostComments(data.data.post._id)
+                    // Enable toggle functionality on newPost
+                    new ToggleLike($(' .toggle-like-button', newPost))
+
                     showNotification("Post published.", 'success')
                 },
                 error: function (error) {
@@ -30,19 +35,19 @@
     }
 
     // method to create a post in DOM
-    let newPostDOM = function (post) {
-        console.log(post)
+    let newPostDOM = function (post, user) {
         return $(`<li id="post-${post._id}">
         <p>
-
-                <small>
-                    <a class="delete-post-button" href="/posts/destroy/${post._id}">Delete</a>
-                </small>
-
-                    ${post.content}
-                        <small>
-                            ${post.user.name}
-                        </small>
+            <small>
+                <a class="delete-post-button" href="/posts/destroy/${post._id}">Delete</a>
+            </small>
+            ${post.content}
+            <small>
+                ${post.user.name}
+            </small>
+            <small>
+            
+            <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${post._id}&type=Post&_id=${user}">0 Likes</a>
         </p>
         <div class="post-comments">
 
@@ -66,7 +71,6 @@
     let deletePost = function (deleteLink) {
         $(deleteLink).click(function(e) {
             e.preventDefault();
-            console.log("Clicked")
             $.ajax({
                 type: 'GET', // Use uppercase 'GET' for consistency
                 url: $(this).prop('href'), // Use $(this) to refer to the clicked element

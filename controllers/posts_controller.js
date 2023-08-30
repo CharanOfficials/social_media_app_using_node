@@ -1,6 +1,7 @@
 import Post from '../models/post.js'
 import Comment from '../models/comment.js'
 import { json } from 'express'
+import Like from '../models/like.js'
 const post = async function (req, res) {
     try {
         let post = await Post.create({
@@ -14,7 +15,8 @@ const post = async function (req, res) {
         if (req.xhr) {
             return res.status(200).json({
                 data: {
-                    post: post
+                    post: post,
+                    user:req.user._id
                 },
                 message: 'Post created!'
             })
@@ -32,6 +34,12 @@ const destroy = async function (req, res) {
         let post = await Post.findById(req.params.id)
         // Id means converting the Object Id into Strings
         if (post.user == req.user.id) {
+            // delete against either the post id or the Post's comments id associated likes
+            // to delete the posts like 
+            await Like.deleteMany({ likeable: post, onModel: 'Post' })
+            // To delete the likes of the comments associated with the posts
+            await Like.deleteMany({_id:{$in:Post.comments}})
+
             post.deleteOne()
             await Comment.deleteMany({ post: req.params.id })
         if (req.xhr) {

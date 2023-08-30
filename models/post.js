@@ -17,6 +17,12 @@ const postScemea = mongoose.Schema({
             ref: 'comment',
             required:true
         }
+    ],
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Like'
+        }
     ]
 }, {
     timestamps: true

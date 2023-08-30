@@ -8,7 +8,8 @@ const newComment = (comment) => {
         subject: 'Your Comment Published',
         html: htmlString
     }).then((info) => {
-        console.log("Message sent", info)
+        console.log("Email sent")
+        // console.log("Message sent", info)
         return
     }).catch(() => {
         console.log("Error in sending the email", err)

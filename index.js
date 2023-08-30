@@ -4,7 +4,7 @@ const port = 8000 // port setup
 import router from './routes/index.js' // get the default route
 import expressLayouts from "express-ejs-layouts"
 import connectMongo from "connect-mongo" // importing mongo store
-import { MongoClient } from 'mongodb'; // necessary for mongo-store vesrsion 5
+import { MongoClient } from 'mongodb'; // necessary for mongo-store version
 import db from "./config/mongoose.js"
 import session from 'express-session';  // used for session cookie
 import passport from "passport";

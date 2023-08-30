@@ -27,11 +27,11 @@ class PostComments{
                 url: '/comments/create',
                 data: $(self).serialize(),
                 success: function (data) {
-                    console.log(data)
-                    let newComment = pSelf.newCommentDom(data.data.comment);
+                    let newComment = pSelf.newCommentDom(data.data.comment, data.data.user);
                     $(`#post-comments-${postId}`).prepend(newComment);
                     pSelf.deleteComment($(' .delete-comment-button', newComment));
-
+                    // binding the class
+                    new ToggleLike($(' .toggle-like-button', newComment))
                     new Noty({
                         theme: 'relax',
                         text: "Comment published!",
@@ -47,22 +47,23 @@ class PostComments{
             });
         });
     }
-    newCommentDom(comment){
+    newCommentDom(comment, user){
         // I've added a class 'delete-comment-button' to the delete comment link and also id to the comment's li
         return $(`<li id="comment-${ comment._id }">
-                        <p>
-                            
-                            <small>
-                                <a class="delete-comment-button" href="/comments/destroy/${comment._id}">Delete</a>
-                            </small>
-                            
-                            ${comment.content}
-                            <br>
-                            <small>
-                                ${comment.user.name}
-                            </small>
-                        </p>    
-                </li>`);
+            <p>
+                <small>
+                    <a class="delete-comment-button" href="/comments/destroy/${comment._id}">Delete</a>
+                </small>
+                
+                ${comment.content}
+                <small>
+                    ${comment.user.name}
+                </small>
+                <small>
+                    <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Comment&_id=${user}">0 Likes</a>
+                </small>
+            </p>    
+            </li>`);
     }
     deleteComment(deleteLink){
         $(deleteLink).click(function(e){
