@@ -7,7 +7,6 @@ router.get('/sign-Up', usersController.signUp)
 router.get('/sign-In', usersController.signIn) 
 router.post('/create', usersController.create)
 router.get('/sign-out', usersController.destroySession)
-
 // use passport as a middleware to authenticate
 router.post(
     '/create-session',

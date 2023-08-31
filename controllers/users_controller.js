@@ -4,9 +4,13 @@ import { dirname, join} from "path"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 import fs from 'fs'
+
 // Edit the user profile
 const profile = function(req, res){
     User.findById(req.params.id)
+        .populate({
+            path: 'friendships'
+        })
         .then((user) => {
         return res.render('profile', {
             title: "Profile",
@@ -17,20 +21,6 @@ const profile = function(req, res){
 
 // UPdate the user profile
 const updateProfile = async function (req, res) {
-    // if (req.user.id == req.params.id) {
-    //     console.log(req.body.name)
-    //     User.findByIdAndUpdate(req.params.id, req.body)
-    //         .then((user) => {
-    //             req.flash('success',"Profile information is updated.")
-    //             return res.redirect('back')
-    //         }).catch((err) => {
-    //             req.flash('error', "Error occured while updating the profile.")
-    //             res.redirect('back')
-    //     })
-    // } else {
-    //     req.flash('error',"You are not authorized to update the profile.")
-    //     return res.redirect('back')
-    // }
     if (req.user.id == req.params.id) {
         try {
             let user = await User.findById(req.params.id)

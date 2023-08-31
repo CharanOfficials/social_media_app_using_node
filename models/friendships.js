@@ -1,16 +1,19 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
+
 const friendshipSchema = new mongoose.Schema({
+    // the user who sent this request
     from_user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'user'
     },
+    // the user who accepted this request, the naming is just to understand, otherwise, the users won't see a difference
     to_user: {
-        id: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
     },
-},
-    {
-    timestamps:true
-    })
-const Friendship = mongoose.model('Friendship', friendshipSchema)
+},{
+    timestamps: true
+});
+
+const Friendship = mongoose.model('Friendship', friendshipSchema);
 export default Friendship

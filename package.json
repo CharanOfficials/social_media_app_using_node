@@ -33,7 +33,8 @@
     "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
-    "sass-middleware": "^0.0.3"
+    "sass-middleware": "^0.0.3",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
