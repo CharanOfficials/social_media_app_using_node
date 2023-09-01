@@ -1,22 +1,36 @@
 import User from '../models/user.js'
 import { fileURLToPath } from 'url'
-import { dirname, join} from "path"
+import { dirname, join } from "path"
+import Friendship from '../models/friendships.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 import fs from 'fs'
 
 // Edit the user profile
-const profile = function(req, res){
-    User.findById(req.params.id)
+const profile = async function (req, res) {
+    let friendship = 'Add'
+        let friendshipFrom = await Friendship.find({
+            from_user: req.user.id,
+            to_user: req.params.id
+        })
+        let friendshipTo = await Friendship.find({
+            from_user: req.params.id,
+            to_user: req.user.id
+        })
+        if (friendshipTo.length !== 0 || friendshipFrom.length !== 0) {
+            friendship = 'Remove'
+        }
+    let user = await User.findById(req.params.id)
         .populate({
             path: 'friendships'
         })
-        .then((user) => {
+        if(user){
         return res.render('profile', {
             title: "Profile",
-            profile_user: user
+            profile_user: user,
+            status: friendship
         })
-    })
+    }
 }
 
 // UPdate the user profile

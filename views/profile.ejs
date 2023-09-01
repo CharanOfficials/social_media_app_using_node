@@ -14,25 +14,31 @@
         <input type="file" name="avatar" id="Profile Picture">
         <input type="submit" value="Update">
     </form>
+    <p>
+        <%= user.name%>
+    </p>
+    <p>
+        <%= user.email%>
+    </p>
     <%} else{%>
         <!-- else show only the profile info -->
-        <% if(user.id==profile_user.id){%>
-            <p><%= user.name%></p>
-            <p><%= user.email%></p>
-            <%}else{%>
+
             <p><%= profile_user.name%></p>
             <p><%= profile_user.email%></p>
+
+        <small>
+            <% if (locals.user){ %>
+                <a class="toggle-friendship-button" href="/friend/toggle/?fromid=<%=user.id%>&toid=<%=profile_user.id%>"><%=status%> Friend</a>
+                <% } %>
+        </small>
+
+        
         <%}%>
-
-<!-- <% for (let i in profile_user.friendships) { %>
-    <% if (profile_user.friendships[i].to_user.equals(user.id)) { %>
-        <a href="/friend/remove/?fromid=<%= user.id %>&toid=<%= profile_user.id %>">Remove friend</a>
-        <% } else { %>
-            <a href="/friend/add/?fromid=<%= user.id %>&toid=<%= profile_user.id %>">Add friend</a>
-            <% } %>
-                <% } %> -->
-
-
-        <a href="/friend/toggle/?fromid=<%=user.id%>&toid=<%=profile_user.id%>">Friend</a>
-        <%}%>
-
+<script src="/js/toggle_friendship.js"></script>
+<script>
+    // Ensure that the document is ready before executing the script
+$('.toggle-friendship-button').each(function () {
+    let self = this;
+    let toggleFriendship = new ToggleFriendship(self);
+});
+</script>
