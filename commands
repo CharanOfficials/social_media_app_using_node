@@ -12,7 +12,16 @@ npm start
 
 To open the GUI of the QUE:
 
-
 To run redis on Linuux Ubuntu:
 sudo service redis-server start
-redis-cli
+redis-cli for cli working
+
+To setup the environment variables on windows, provide all the values in environment variables with GOOSIP_ENVIRONMENT as production
+
+We have to set the Environment value using the below command:
+
+1. To set the value to undefined/ development
+   [System.Environment]::SetEnvironmentVariable("GOOSIP_ENVIRONMENT", $null, [System.EnvironmentVariableTarget]::Process)
+
+2. [System.Environment]::SetEnvironmentVariable("GOOSIP_ENVIRONMENT", $production, [System.EnvironmentVariableTarget]::Process)
+   Restart the terminal (required only in case of production)

@@ -1,10 +1,11 @@
 import passport from 'passport';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import User from '../models/user.js';
+import env from '../config/environment.js'
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // extract key for auth
-    secretOrKey: 'Goosip' // Encryption/ decryption key
+    secretOrKey: env.jwt_secret // Encryption/ decryption key
 };
 
 // After authentication the user will get checked on every api request

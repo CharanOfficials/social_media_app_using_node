@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
-
-mongoose.connect('mongodb://127.0.0.1:27017/goosip_development')
+import env from '../config/environment.js'
+mongoose.connect(`mongodb://127.0.0.1:27017/${env.db}`)
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, "Error while connecting to MongoDB"))

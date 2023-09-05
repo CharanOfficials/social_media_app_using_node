@@ -2,12 +2,13 @@ import passport from "passport";
 import { OAuth2Strategy } from 'passport-google-oauth'
 import crypto from 'crypto'
 import User from '../models/user.js'
-
+import env from '../config/environment.js'
+console.log("Nodemailer",env)
 // tell passport to use a new startegy for google login
 passport.use(new OAuth2Strategy({
-    clientID: "614238014972-88cdi2i6j767jslus4hvtoifu9g0fj4f.apps.googleusercontent.com",
-    clientSecret: "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",
-    callbackURL: "http://127.0.0.1:8000/user/auth/google/callback"
+    clientID: env.google_client_id,
+    clientSecret: env.google_client_secret,
+    callbackURL: env.google_callback_url
 },
     async function (accessToken, refreshToken, profile, done) {
         // find a user

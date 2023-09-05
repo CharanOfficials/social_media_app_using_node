@@ -16,5 +16,4 @@ router.use('/comments', comments)
 router.use('/api',api)
 router.use('/likes', likes)
 router.use('/friend', friends)
-
 export default router

@@ -1,6 +1,8 @@
 import express from "express" // import express
 const app = express() // launching express
 const port = 8000 // port setup
+import logger from 'morgan' // for maintaining logs
+import env from './config/environment.js'
 import router from './routes/index.js' // get the default route
 import expressLayouts from "express-ejs-layouts"
 import connectMongo from "connect-mongo" // importing mongo store
@@ -19,16 +21,24 @@ import { fileURLToPath } from 'url'
 import { dirname, join} from "path"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+// import cors from 'cors'
+// Setup the chatserver using the Socket.io
+import http from 'http'
+import chatSockets from './config/chat_sockets.js'
+const chatServer = http.Server(app)
+const chatsockets = chatSockets(chatServer)
+chatServer.listen(5000)
+console.log("Chat serve is listeniong on 5000")
 
 app.set("view engine", "ejs") // set up a view engine
 app.set("views", "./views") // set the path
 // make the uploads path avaiable to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(expressLayouts) // set the layouts before routing starts
-app.use(express.static('./assets')) // entered in assets
+app.use(express.static(env.asset_path)) // entered in assets
 app.use(express.urlencoded()) // middleware
 app.use(cookieParser()) // Setup cookie parser
-
+// app.use(cors({ origin: 'http://127.0.0.1:5000' }))
 // extract styles and scripts from the subpages into the layout
 app.set('layout extractStyles', true) 
 app.set('layout extractScripts', true)
@@ -50,7 +60,7 @@ app.use(session({
   }),
     name: "goosip", // Session cookie name
     // Todo chabge the secret before deployment in production node
-    secret: "manipal",  // Encryption key for cookie
+    secret: env.session_cookie_key,  // Encryption key for cookie
     saveUninitialized: false, // if the session is not initialized then don't save
     resave: false,
     //  Cookie age

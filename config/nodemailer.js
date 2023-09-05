@@ -4,17 +4,9 @@ import { dirname, join} from "path"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 import ejs from 'ejs'
+import env from '../config/environment.js'
 
-const transporter = nodeMailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: "codingninjas2k16@gmail.com",
-        pass: "slwvvlczduktvhdj"
-    }
-})
+const transporter = nodeMailer.createTransport(env.smtp)
 let renderTemplate = (data, relativePath) => {
     let mailHTML;
     ejs.renderFile(
