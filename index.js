@@ -34,6 +34,7 @@ app.set("view engine", "ejs") // set up a view engine
 app.set("views", "./views") // set the path
 // make the uploads path avaiable to the browser
 app.use('/uploads', express.static(__dirname + '/uploads'))
+app.use(logger(env.morgan.mode, env.morgan.options))
 app.use(expressLayouts) // set the layouts before routing starts
 app.use(express.static(env.asset_path)) // entered in assets
 app.use(express.urlencoded()) // middleware

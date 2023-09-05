@@ -1,3 +1,17 @@
+import fs from 'fs'
+import rfs from 'rotating-file-stream'
+import { fileURLToPath } from 'url'
+import { dirname, join} from "path"
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const logDiretory = join(__dirname, '../production_logs')
+fs.existsSync(logDiretory) || fs.mkdirSync(logDiretory)
+
+const accessLogStream = rfs.createStream('access.log', {
+    interval: '1d',
+    path:logDiretory
+})
+
 const development = {
     name: 'development',
     asset_path: './assets',
@@ -16,7 +30,11 @@ const development = {
     google_client_id: "614238014972-88cdi2i6j767jslus4hvtoifu9g0fj4f.apps.googleusercontent.com",
     google_client_secret: "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",
     google_callback_url: "http://127.0.0.1:8000/user/auth/google/callback",
-    jwt_secret: 'Goosip'
+    jwt_secret: 'Goosip',
+    morgan: {
+        mode: 'dev',
+        options:{stream:accessLogStream}
+    }
 }
 let db_Name_Prod = process.env.GOOSIP_DB;
 db_Name_Prod = db_Name_Prod.replace(/"/g, '');
@@ -39,7 +57,11 @@ const production = {
     google_client_id: process.env.GOOSIP_GOOGLE_CLIENT_ID,
     google_client_secret: process.env.GOOSIP_GOOGLE_CLIENT_SECRET,
     google_callback_url: process.env.GOOSIP_GOOGLE_CALLBACK_URL,
-    jwt_secret: process.env.GOOSIP_JWT_SECRET
+    jwt_secret: process.env.GOOSIP_JWT_SECRET,
+    morgan: {
+        mode: 'combined',
+        options:{stream:accessLogStream}
+    }
 }
 
 console.log(process.env.GOOSIP_GOOGLE_CALLBACK_URL)
