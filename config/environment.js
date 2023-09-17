@@ -27,8 +27,8 @@ const development = {
                 pass: "slwvvlczduktvhdj"
             }
         },
-    google_client_id: "614238014972-88cdi2i6j767jslus4hvtoifu9g0fj4f.apps.googleusercontent.com",
-    google_client_secret: "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",
+    google_client_id: "",
+    google_client_secret: "",
     google_callback_url: "http://127.0.0.1:8000/user/auth/google/callback",
     jwt_secret: 'Goosip',
     morgan: {

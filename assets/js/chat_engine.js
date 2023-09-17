@@ -12,7 +12,7 @@ class ChatEngine{
         let self = this
         // to build the connection
         this.socket.on('connect', function () {
-            console.log("Connection established using Sockets...")
+            // console.log("Connection established using Sockets...")
         })
         // send request to join room
         self.socket.emit('join_room', {
@@ -21,7 +21,7 @@ class ChatEngine{
         })
         // To notify the joining
         self.socket.on('user_joined', function (data) {
-            console.log('A user joined', data)
+            // console.log('A user joined', data)
         })
         // Sending the message
         $('#send-message').click(function () {
@@ -36,7 +36,7 @@ class ChatEngine{
             }
         })
         self.socket.on('receive_message', function(data){
-            console.log('message received', data.message);
+            // console.log('message received', data.message);
 
 
             let newMessage = $('<li>');

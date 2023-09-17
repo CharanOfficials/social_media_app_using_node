@@ -8,13 +8,13 @@ const chatSockets = function (socketServer) {
     }
   })
     io.on('connection', (socket) => {
-    console.log('new connection received', socket.id);
+    // console.log('new connection received', socket.id);
 
     socket.on('disconnect', () => {
-      console.log('socket disconnected!');
+      // console.log('socket disconnected!');
     });
     socket.on('join_room', function (data) {
-        console.log('joining request receved.', data)
+        // console.log('joining request receved.', data)
         socket.join(data.chatRoom)
         io.in(data.chatRoom).emit('user_joined',data)
     })

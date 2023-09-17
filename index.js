@@ -1,11 +1,13 @@
 import express from "express" // import express
 const app = express() // launching express
+import viewHelpers from './config/view-helpers.js'
+viewHelpers(app) // for static files
 const port = 8000 // port setup
 import logger from 'morgan' // for maintaining logs
 import env from './config/environment.js'
 import router from './routes/index.js' // get the default route
 import expressLayouts from "express-ejs-layouts"
-import connectMongo from "connect-mongo" // importing mongo store
+import connectMongo from "connect-mongo" // importing mongo store     
 import { MongoClient } from 'mongodb'; // necessary for mongo-store version
 import db from "./config/mongoose.js"
 import session from 'express-session';  // used for session cookie
@@ -23,7 +25,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 // import cors from 'cors'
 // Setup the chatserver using the Socket.io
-import http from 'http'
+import http from 'http' // For chat
 import chatSockets from './config/chat_sockets.js'
 const chatServer = http.Server(app)
 const chatsockets = chatSockets(chatServer)
@@ -37,9 +39,8 @@ app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(logger(env.morgan.mode, env.morgan.options))
 app.use(expressLayouts) // set the layouts before routing starts
 app.use(express.static(env.asset_path)) // entered in assets
-app.use(express.urlencoded()) // middleware
+app.use(express.urlencoded({extended: true})) // decrypt http
 app.use(cookieParser()) // Setup cookie parser
-// app.use(cors({ origin: 'http://127.0.0.1:5000' }))
 // extract styles and scripts from the subpages into the layout
 app.set('layout extractStyles', true) 
 app.set('layout extractScripts', true)
@@ -57,7 +58,7 @@ app.use(session({
   store: connectMongo.create({
     mongooseConnection: db,
     autoRemove: 'disabled',
-    client: mongoClient // Used for mongo-store latest verasion
+    client: mongoClient // Used for mongo-store latest version
   }),
     name: "goosip", // Session cookie name
     // Todo chabge the secret before deployment in production node

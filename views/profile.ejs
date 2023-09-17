@@ -1,11 +1,10 @@
-<link rel="stylesheet" href="/css/user_profile.css">
+<link rel="stylesheet" href="<%= assetPath('css/user_profile.css') %>">
 <% if(user.id==profile_user.id){%>
     <img src="<%= user.avatar %>" alt="<%= user.name %>" width="100">
 <%}else{%>
     <img src="<%= profile_user.avatar %>" alt="<%= user.name %>" width="100">
 <%}%>
 <h1> Page / <%= title %></h1>
-
 <% if(user.id == profile_user.id){%>
     <!-- If user matches then show the form -->
     <form action="/user/update/<%= profile_user.id %>" method="POST" enctype="multipart/form-data">
@@ -34,7 +33,7 @@
 
         
         <%}%>
-<script src="/js/toggle_friendship.js"></script>
+<script src="<%= assetPath('js/toggle_friendship.js') %>"></script>
 <script>
     // Ensure that the document is ready before executing the script
 $('.toggle-friendship-button').each(function () {
